@@ -2,6 +2,7 @@
 
 let randomChampion;
 let randomChampionSkin;
+let currentPatch;
 
 document.getElementById('guess-input').addEventListener('keydown', function(event) {
     if(event.key === 'Enter') {
@@ -22,7 +23,8 @@ document.getElementById('guess-input').addEventListener('keydown', function(even
 load();
 
 async function load() {
-    document.getElementById("patch-version").textContent = await getCurrentLeaguePatch();
+    currentPatch = await getCurrentLeaguePatch();
+    document.getElementById("patch-version").textContent = currentPatch;
 
 
     randomChampion = await getRandomChampion();
@@ -50,7 +52,7 @@ async function getCurrentLeaguePatch() {
 async function getLeagueChampions() {
     // Get champion roster from https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion.json
     // Then for each champion, store the name of the champion in a new array and return that array. We only need the names.
-    return fetch('https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion.json')
+    return fetch(`https://ddragon.leagueoflegends.com/cdn/${currentPatch}/data/en_US/champion.json`)
         .then(response => response.json())
         .then(data => {
             return Object.values(data.data).map(champion => champion.id);
@@ -64,7 +66,7 @@ async function getLeagueChampions() {
 async function getChampionSkins(championName) {
     // Get champion skins from https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion.json
     // Then for each champion, store the name of the champion in a new array and return that array. We only need the names.
-    return fetch(`https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion/${championName}.json`)
+    return fetch(`https://ddragon.leagueoflegends.com/cdn/${currentPatch}/data/en_US/champion/${championName}.json`)
         .then(response => response.json())
         .then(data => {
             return Object.values(data.data)[0].skins.map(skin => championName + "_" + skin.num);
