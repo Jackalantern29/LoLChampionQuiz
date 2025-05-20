@@ -5,10 +5,11 @@ let randomChampionSkin;
 
 document.getElementById('guess-input').addEventListener('keydown', function(event) {
     if(event.key === 'Enter') {
-        const guess = event.target.value.toLowerCase();
+        let guess = event.target.value.toLowerCase();
         const championName = randomChampion.toLowerCase();
-        if (guess === championName) {
-            alert("Correct! The champion was " + randomChampion);
+
+        if (formatChampionToChampID(guess).toLowerCase() === championName.toLowerCase()) {
+            alert("Correct! The champion was " + formatChampIDToChampion(randomChampion).replace(/(?:^|[\s'])\w/g, match => match.toUpperCase()));
             load();
         } else {
             alert("Incorrect! Try again.");
@@ -84,5 +85,48 @@ async function getRandomChampionSkin(championName) {
     // Get a random champion skin from the list of champions and skins
     const skins = await getChampionSkins(championName);
     const randomSkin = skins[Math.floor(Math.random() * skins.length)];
+    if(randomSkin === "Fiddlesticks_9") {
+        return 'resources/fiddlesticks_9.jpg'
+    } else if(randomSkin === "Fiddlesticks_27") {
+        return 'resources/fiddlesticks_27.jpg'
+    } else if(randomSkin === "Fiddlesticks_37") {
+        return 'resources/fiddlesticks_37.jpg'
+    }
     return `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${randomSkin}.jpg`
+}
+
+const nameMap = {
+    "aurelion sol" : "aurelionsol",
+    "bel'veth" : "belveth",
+    "cho'gath" : "chogath",
+    "dr. mundo" : "drmundo",
+    "kai'sa" : "kaisa",
+    "kha'zix" : "khazix",
+    "kog'maw" : "kogmaw",
+    "k'sante" : "ksante",
+    "jarvan iv" : "jarvaniv",
+    "lee sin" : "leesin",
+    "master yi" : "masteryi",
+    "miss fortune" : "missfortune",
+    "nunu & willump" : "nunu",
+    "rek'sai" : "reksai",
+    "renata glasc" : "renata",
+    "tahm kench" : "tahmkench",
+    "twisted fate" : "twistedfate",
+    "vel'koz" : "velkoz",
+    "xin zhao" : "xinzhao",
+    "wukong" : "monkeyking"
+}
+
+function formatChampionToChampID(name) {
+    return nameMap[name] || name;
+}
+
+function formatChampIDToChampion(name) {
+    for (const [key, value] of Object.entries(nameMap)) {
+        if (value.toLowerCase() === name.toLowerCase()) {
+            return key;
+        }
+    }
+    return name;
 }
