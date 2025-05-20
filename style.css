@@ -7,6 +7,4 @@ body::before {
     background-size: cover;
     background-position: center;
     filter: blur(10px);
-    width: 100vw;
-    height: 100vh;
 }
