@@ -9,3 +9,4 @@ Ideas to implement:
 * Challenge mode - must include full splash art name + champion
 * Link to Discord / Github link
 * Improve responsive design for mobile devices
+* Add a stuck button
